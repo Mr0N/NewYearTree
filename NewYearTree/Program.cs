@@ -8,7 +8,7 @@ using System.Timers;
 using System.Resources;
 using NewYearTree;
 
-List<(int left, int top)> ls = new List<(int left, int top)>();
+List<Check> ls = new List<Check>();
 string text = Resource.load;
 //Console.BackgroundColor = ConsoleColor.Yellow;
 foreach (var item in text)
@@ -20,7 +20,7 @@ Task.Run(async () =>
 {
     while (true)
     {
-        await Task.Delay(3000);
+        await Task.Delay(1000);
         Change();
     }
 });
@@ -31,7 +31,9 @@ void Set(char obj)
     if (obj == '@')
     {
         Console.ForegroundColor = ConsoleColor.Red;
-        ls.Add(Console.GetCursorPosition());
+        var result = Console.GetCursorPosition();
+        var check =  new Check() { Left = result.Left, Top = result.Top, isRed = false };
+        ls.Add(check);
     }
     else if (obj == '|' ||
         obj == '_' ||
@@ -50,18 +52,26 @@ void Change()
 {
     foreach (var item in ls)
     {
-        Console.SetCursorPosition(item.left, item.top);
-        if (Console.ForegroundColor == ConsoleColor.Red)
+        Console.SetCursorPosition(item.Left,item.Top);
+        if (item.isRed)
         {
             Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.Write("Y");
+            Console.Write("@");
+            item.isRed = false;
         }
         else// if(Console.ForegroundColor == ConsoleColor.Yellow)
         {
+            item.isRed = true;
             Console.ForegroundColor = ConsoleColor.Red;
-            Console.Write("R");
+            Console.Write("@");
         }
     }
 
 }
 Console.ReadKey();
+class Check
+{
+    public int Left { set; get; }
+    public int Top { set; get; }
+    public bool isRed { set; get; }
+}
