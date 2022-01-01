@@ -8,6 +8,7 @@ using System.Timers;
 using System.Resources;
 using NewYearTree;
 
+List<(int left, int top)> ls = new List<(int left, int top)>();
 string text = Resource.load;
 //Console.BackgroundColor = ConsoleColor.Yellow;
 foreach (var item in text)
@@ -15,11 +16,23 @@ foreach (var item in text)
     Set(item);
     Console.Write(item);
 }
-Console.BackgroundColor = ConsoleColor.Red;
+Task.Run(async () =>
+{
+    while (true)
+    {
+        await Task.Delay(3000);
+        Change();
+    }
+});
+//Console.BackgroundColor = ConsoleColor.Red;
+
 void Set(char obj)
 {
     if (obj == '@')
+    {
         Console.ForegroundColor = ConsoleColor.Red;
+        ls.Add(Console.GetCursorPosition());
+    }
     else if (obj == '|' ||
         obj == '_' ||
         obj == ',' ||
@@ -32,5 +45,23 @@ void Set(char obj)
     else if (obj == 'o') Console.ForegroundColor = ConsoleColor.Yellow;
     else if (obj == '*') Console.ForegroundColor = ConsoleColor.Magenta;
     else Console.ForegroundColor = ConsoleColor.Green;
+}
+void Change()
+{
+    foreach (var item in ls)
+    {
+        Console.SetCursorPosition(item.left, item.top);
+        if (Console.ForegroundColor == ConsoleColor.Red)
+        {
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.Write("Y");
+        }
+        else ///if(Console.ForegroundColor == ConsoleColor.Yellow)
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.Write("R");
+        }
+    }
+
 }
 Console.ReadKey();
