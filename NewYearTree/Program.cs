@@ -56,7 +56,7 @@ void Change()
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.Write("Y");
         }
-        else ///if(Console.ForegroundColor == ConsoleColor.Yellow)
+        else// if(Console.ForegroundColor == ConsoleColor.Yellow)
         {
             Console.ForegroundColor = ConsoleColor.Red;
             Console.Write("R");
